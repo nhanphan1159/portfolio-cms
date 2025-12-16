@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 import httpClient from "@/services/httpClient";
 
@@ -16,7 +16,7 @@ export function useResourceManager<T extends ResourceItem>(endpoint: string) {
   const [editing, setEditing] = useState<T | null>(null);
   const [showForm, setShowForm] = useState(false);
 
-  const normList = (res: any): T[] => {
+  const normList = useCallback((res: any): T[] => {
     const arr = Array.isArray(res)
       ? res
       : Array.isArray(res?.data)
@@ -25,9 +25,9 @@ export function useResourceManager<T extends ResourceItem>(endpoint: string) {
           ? res.items
           : [];
     return arr.map((it: any) => ({ ...it, id: it.id ?? it._id }));
-  };
+  }, []);
 
-  const load = async () => {
+  const load = useCallback(async () => {
     setLoading(true);
     setError(null);
     try {
@@ -39,11 +39,11 @@ export function useResourceManager<T extends ResourceItem>(endpoint: string) {
     } finally {
       setLoading(false);
     }
-  };
+  }, [endpoint, normList]);
 
   useEffect(() => {
     load();
-  }, [endpoint]);
+  }, [load]);
 
   const openCreate = () => {
     setEditing(null);
