@@ -12,7 +12,7 @@ const httpClient = ky.create({
       },
     ],
     afterResponse: [
-      async (request, options, response) => {
+      async (request, _options, response) => {
         if (!response.ok) {
           console.error(
             `Error with request to ${request.url}: ${response.status}`
