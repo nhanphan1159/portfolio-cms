@@ -15,7 +15,7 @@ type AboutItem = {
 
 export default function AboutManager() {
   const {
-    items: allItems,
+    items,
     loading,
     error,
     editing,
@@ -33,27 +33,26 @@ export default function AboutManager() {
     role: "",
   });
 
-  const items = allItems.length > 0 ? allItems[0] : null;
-
   const handleOpenCreate = () => {
     setForm({ content: "", name: "", role: "" });
     openCreate();
   };
 
-  const handleOpenEdit = (item: AboutItem) => {
+  const handleOpenEdit = (data: AboutItem) => {
     setForm({
-      content: item.content ?? "",
-      id: item.id,
-      name: item.name ?? "",
-      role: item.role ?? "",
+      content: data.content ?? "",
+      id: data.id,
+      name: data.name ?? "",
+      role: data.role ?? "",
     });
-    openEdit(item);
+    openEdit(data);
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     await save(form);
   };
+  console.log("AboutManager rendered", { form, items, editing, showForm });
 
   return (
     <div>
@@ -73,27 +72,27 @@ export default function AboutManager() {
         itemsCount={items ? 1 : 0}
       />
 
-      {items && (
-        <div className="space-y-2 border rounded p-3">
+      {items.map((item) => (
+        <div className="space-y-2 border rounded p-3" key={item.id}>
           <div>
-            {items.name && (
+            {item.name && (
               <div className="text-sm font-medium text-gray-800">
-                {items.name}
+                {item.name}
               </div>
             )}
-            {items.role && (
-              <div className="text-sm text-gray-600">{items.role}</div>
+            {item.role && (
+              <div className="text-sm text-gray-600">{item.role}</div>
             )}
             <div className="text-sm text-gray-700 whitespace-pre-line mt-2">
-              {items.content}
+              {item.content}
             </div>
           </div>
           <ListItemActions
-            onEdit={() => handleOpenEdit(items)}
-            onDelete={() => remove(items.id)}
+            onEdit={() => handleOpenEdit(item)}
+            onDelete={() => remove(item.id)}
           />
         </div>
-      )}
+      ))}
 
       <AboutForm
         isOpen={showForm}

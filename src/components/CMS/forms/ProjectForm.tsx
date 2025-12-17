@@ -4,10 +4,7 @@ import FormButtons from "@/components/CMS/shared/FormButtons";
 import FormField from "@/components/CMS/shared/FormField";
 import Modal from "@/components/CMS/shared/Modal";
 
-type PhotoItem = {
-  url: string;
-  caption?: string;
-};
+type PhotoItem = string;
 
 type ProjectItem = {
   id?: string;
@@ -42,7 +39,7 @@ export default function ProjectForm({
 }: ProjectFormProps) {
   function updatePhoto(index: number, key: "url" | "caption", value: string) {
     const nextPhotos = [...galleryPhotos];
-    nextPhotos[index] = { ...nextPhotos[index], [key]: value };
+    nextPhotos[index] = value;
     onGalleryChange(nextPhotos);
   }
 
@@ -57,10 +54,7 @@ export default function ProjectForm({
         Array.from(files).forEach((file) => {
           const reader = new FileReader();
           reader.onloadend = () => {
-            onGalleryChange([
-              ...galleryPhotos,
-              { url: reader.result as string, caption: "" },
-            ]);
+            onGalleryChange([...galleryPhotos]);
           };
           reader.readAsDataURL(file);
         });
@@ -170,13 +164,13 @@ export default function ProjectForm({
                 <div key={idx} className="border rounded p-3 space-y-2">
                   <div className="flex gap-3">
                     <img
-                      src={p.url}
-                      alt={p.caption ?? `Photo ${idx + 1}`}
+                      src={p}
+                      alt={`Photo ${idx + 1}`}
                       className="w-32 h-32 object-cover rounded border"
                     />
                     <div className="flex-1 space-y-2">
                       <input
-                        value={p.caption ?? ""}
+                        value={p ?? ""}
                         onChange={(e) =>
                           updatePhoto(idx, "caption", e.target.value)
                         }

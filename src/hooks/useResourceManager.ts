@@ -17,13 +17,7 @@ export function useResourceManager<T extends ResourceItem>(endpoint: string) {
   const [showForm, setShowForm] = useState(false);
 
   const normList = useCallback((res: any): T[] => {
-    const arr = Array.isArray(res)
-      ? res
-      : Array.isArray(res?.data)
-        ? res.data
-        : Array.isArray(res?.items)
-          ? res.items
-          : [];
+    const arr = Array.isArray(res) ? res : [res];
     return arr.map((it: any) => ({ ...it, id: it.id ?? it._id }));
   }, []);
 
@@ -79,7 +73,9 @@ export function useResourceManager<T extends ResourceItem>(endpoint: string) {
     if (!confirm("Bạn có chắc muốn xoá mục này?")) return;
     try {
       await httpClient.delete(`${endpoint}/${id}`).json();
-      setItems((prev) => prev.filter((it) => it.id !== id));
+      setItems((prev) =>
+        Array.isArray(prev) ? prev.filter((it) => it.id !== id) : prev
+      );
     } catch (err) {
       setError("Xoá thất bại");
       console.error(err);

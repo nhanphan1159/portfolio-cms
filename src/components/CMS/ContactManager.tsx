@@ -17,7 +17,7 @@ type ContactItem = {
 
 export default function ContactManager() {
   const {
-    items: allItems,
+    items,
     loading,
     error,
     editing,
@@ -37,23 +37,23 @@ export default function ContactManager() {
     github: "",
   });
 
-  const items = allItems.length > 0 ? allItems[0] : null;
+  const item = items.length > 0 ? items[0] : null;
 
   const handleOpenCreate = () => {
     setForm({ address: "", email: "", phone: "", linkedin: "", github: "" });
     openCreate();
   };
 
-  const handleOpenEdit = (item: ContactItem) => {
+  const handleOpenEdit = (data: ContactItem) => {
     setForm({
-      address: item.address ?? "",
-      email: item.email ?? "",
-      phone: item.phone ?? "",
-      linkedin: item.linkedin ?? "",
-      github: item.github ?? "",
-      id: item.id,
+      address: data.address ?? "",
+      email: data.email ?? "",
+      phone: data.phone ?? "",
+      linkedin: data.linkedin ?? "",
+      github: data.github ?? "",
+      id: data.id,
     });
-    openEdit(item);
+    openEdit(data);
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -73,55 +73,51 @@ export default function ContactManager() {
         </button>
       </div>
 
-      <LoadingError
-        loading={loading}
-        error={error}
-        itemsCount={items ? 1 : 0}
-      />
+      <LoadingError loading={loading} error={error} itemsCount={item ? 1 : 0} />
 
-      {items && (
+      {item && (
         <div className="space-y-2 border rounded p-3">
           <div className="flex-1">
-            {items.email && (
+            {item.email && (
               <div className="mb-2">
                 <div className="text-xs uppercase text-gray-500">Email</div>
-                <div className="font-semibold">{items.email}</div>
+                <div className="font-semibold">{item.email}</div>
               </div>
             )}
-            {items.phone && (
+            {item.phone && (
               <div className="mb-2">
                 <div className="text-xs uppercase text-gray-500">Phone</div>
-                <div className="font-semibold">{items.phone}</div>
+                <div className="font-semibold">{item.phone}</div>
               </div>
             )}
-            {items.address && (
+            {item.address && (
               <div className="mb-2">
                 <div className="text-xs uppercase text-gray-500">Address</div>
                 <div className="text-sm text-gray-700 whitespace-pre-line">
-                  {items.address}
+                  {item.address}
                 </div>
               </div>
             )}
-            {items.linkedin && (
+            {item.linkedin && (
               <div className="mb-2">
                 <div className="text-xs uppercase text-gray-500">LinkedIn</div>
                 <div className="text-sm text-gray-700 whitespace-pre-line">
-                  {items.linkedin}
+                  {item.linkedin}
                 </div>
               </div>
             )}
-            {items.github && (
+            {item.github && (
               <div className="mb-2">
                 <div className="text-xs uppercase text-gray-500">GitHub</div>
                 <div className="text-sm text-gray-700 whitespace-pre-line">
-                  {items.github}
+                  {item.github}
                 </div>
               </div>
             )}
           </div>
           <ListItemActions
-            onEdit={() => handleOpenEdit(items)}
-            onDelete={() => remove(items.id)}
+            onEdit={() => handleOpenEdit(item)}
+            onDelete={() => remove(item.id)}
           />
         </div>
       )}

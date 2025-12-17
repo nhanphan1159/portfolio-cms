@@ -4,10 +4,7 @@ import ProjectForm from "@/components/CMS/forms/ProjectForm";
 import ListItemActions from "@/components/CMS/shared/ListItemActions";
 import { useResourceManager } from "@/hooks/useResourceManager";
 
-type PhotoItem = {
-  url: string;
-  caption?: string;
-};
+type PhotoItem = string;
 
 type ProjectItem = {
   id?: string;
@@ -66,13 +63,10 @@ export default function ProjectManager() {
       description: source.description ?? "",
       url: source.url ?? "",
       imgMain: source.imgMain ?? "",
-      img:
-        source.img && source.img.length > 0
-          ? source.img
-          : [{ url: "", caption: "" }],
+      img: source.img && source.img.length > 0 ? source.img : [""],
       id: source.id ?? source._id ?? item.id,
     });
-    setGalleryPhotos(source.img ?? []);
+    setGalleryPhotos(source.img ?? [""]);
     openEdit(item);
   };
 
@@ -143,20 +137,18 @@ export default function ProjectManager() {
               {it.img && it.img.length > 0 && (
                 <div className="mt-2 space-y-1">
                   <div className="text-xs uppercase text-gray-500">Gallery</div>
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                  <div className="flex flex-wrap gap-2">
                     {it.img.map((p, idx) => (
-                      <div key={idx} className="border rounded p-2 flex gap-2">
+                      <div key={idx} className="border rounded p-2 flex w-fit">
                         <div className="w-20 h-20 bg-gray-100 rounded overflow-hidden">
-                          {p.url ? (
+                          {p ? (
                             <img
-                              src={p.url}
-                              alt={p.caption ?? it.title}
+                              src={p}
+                              alt={p ?? it.title}
                               className="w-full h-full object-cover cursor-zoom-in"
                               onClick={() =>
                                 setPreview({
-                                  url: p.url,
-                                  caption: p.caption,
-                                  title: it.title,
+                                  url: p,
                                 })
                               }
                             />
@@ -165,10 +157,6 @@ export default function ProjectManager() {
                               No image
                             </div>
                           )}
-                        </div>
-                        <div className="flex-1 text-sm">
-                          <div className="font-medium truncate">{p.url}</div>
-                          <div className="text-gray-600">{p.caption}</div>
                         </div>
                       </div>
                     ))}
@@ -189,7 +177,7 @@ export default function ProjectManager() {
       <ProjectForm
         isOpen={showForm}
         isEditing={!!editing}
-        form={form}
+        form={form || ""}
         galleryPhotos={galleryPhotos}
         onFormChange={setForm}
         onGalleryChange={setGalleryPhotos}
