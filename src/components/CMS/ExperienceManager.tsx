@@ -11,7 +11,7 @@ type ExperienceItem = {
   company: string;
   role: string;
   startAt: string;
-  endAT: string;
+  endAt: string;
   job: string;
 };
 
@@ -33,12 +33,12 @@ export default function ExperienceManager() {
     company: "",
     role: "",
     startAt: "",
-    endAT: "",
+    endAt: "",
     job: "",
   });
 
   const handleOpenCreate = () => {
-    setForm({ company: "", role: "", startAt: "", endAT: "", job: "" });
+    setForm({ company: "", role: "", startAt: "", endAt: "", job: "" });
     openCreate();
   };
 
@@ -47,7 +47,7 @@ export default function ExperienceManager() {
       company: item.company ?? "",
       role: item.role ?? "",
       startAt: item.startAt ?? "",
-      endAT: item.endAT ?? "",
+      endAt: item.endAt ?? "",
       id: item.id,
       job: item.job ?? "",
     });
@@ -83,7 +83,7 @@ export default function ExperienceManager() {
               <div className="font-semibold">{it.company}</div>
               <div className="text-sm text-gray-700">{it.role}</div>
               <div className="text-xs text-gray-500">
-                {it.startAt} - {it.endAT}
+                {it.startAt} - {it.endAt}
               </div>
             </div>
             <ListItemActions

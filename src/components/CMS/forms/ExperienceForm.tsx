@@ -10,7 +10,7 @@ type ExperienceItem = {
   company: string;
   role: string;
   startAt: string;
-  endAT: string;
+  endAt: string;
   job: string;
 };
 
@@ -59,8 +59,8 @@ export default function ExperienceForm({
           />
           <FormField
             label="To"
-            value={form.endAT ?? ""}
-            onChange={(val) => onFormChange((s) => ({ ...s, endAT: val }))}
+            value={form.endAt ?? ""}
+            onChange={(val) => onFormChange((s) => ({ ...s, endAt: val }))}
             placeholder="YYYY"
           />
         </div>
