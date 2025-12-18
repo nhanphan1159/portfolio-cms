@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 
 import ContactForm from "@/components/CMS/forms/ContactForm";
+import ItemDetail from "@/components/CMS/shared/ItemDetail";
 import ListItemActions from "@/components/CMS/shared/ListItemActions";
 import LoadingError from "@/components/CMS/shared/LoadingError";
 import { useResourceManager } from "@/hooks/useResourceManager";
@@ -78,42 +79,11 @@ export default function ContactManager() {
       {item && (
         <div className="space-y-2 border rounded p-3">
           <div className="flex-1">
-            {item.email && (
-              <div className="mb-2">
-                <div className="text-xs uppercase text-gray-500">Email</div>
-                <div className="font-semibold">{item.email}</div>
-              </div>
-            )}
-            {item.phone && (
-              <div className="mb-2">
-                <div className="text-xs uppercase text-gray-500">Phone</div>
-                <div className="font-semibold">{item.phone}</div>
-              </div>
-            )}
-            {item.address && (
-              <div className="mb-2">
-                <div className="text-xs uppercase text-gray-500">Address</div>
-                <div className="text-sm text-gray-700 whitespace-pre-line">
-                  {item.address}
-                </div>
-              </div>
-            )}
-            {item.linkedin && (
-              <div className="mb-2">
-                <div className="text-xs uppercase text-gray-500">LinkedIn</div>
-                <div className="text-sm text-gray-700 whitespace-pre-line">
-                  {item.linkedin}
-                </div>
-              </div>
-            )}
-            {item.github && (
-              <div className="mb-2">
-                <div className="text-xs uppercase text-gray-500">GitHub</div>
-                <div className="text-sm text-gray-700 whitespace-pre-line">
-                  {item.github}
-                </div>
-              </div>
-            )}
+            <ItemDetail label="Email" value={item.email} />
+            <ItemDetail label="Phone" value={item.phone} />
+            <ItemDetail label="Address" value={item.address} />
+            <ItemDetail label="LinkedIn" value={item.linkedin} />
+            <ItemDetail label="GitHub" value={item.github} />
           </div>
           <ListItemActions
             onEdit={() => handleOpenEdit(item)}

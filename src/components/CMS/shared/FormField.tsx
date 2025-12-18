@@ -26,7 +26,7 @@ export default function FormField({
         <textarea
           value={value}
           onChange={(e) => onChange(e.target.value)}
-          className="w-full border rounded px-2 py-1"
+          className="w-full border rounded px-2 py-1 resize-none"
           rows={rows}
           placeholder={placeholder}
           required={required}

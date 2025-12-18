@@ -9,8 +9,10 @@ type EducationItem = {
   _id?: string;
   school: string;
   degree: string;
-  from?: string;
-  to?: string;
+  startAt?: string;
+  endAt?: string;
+  GPA?: string;
+  description?: string;
 };
 
 interface EducationFormProps {
@@ -42,24 +44,39 @@ export default function EducationForm({
           value={form.school}
           onChange={(val) => onFormChange((s) => ({ ...s, school: val }))}
           required
+          placeholder="University"
         />
         <FormField
           label="Degree"
           value={form.degree}
           onChange={(val) => onFormChange((s) => ({ ...s, degree: val }))}
           required
+          placeholder="Bachelor of Science in Computer Science"
+        />
+        <FormField
+          label="GPA"
+          value={form.GPA ?? ""}
+          onChange={(val) => onFormChange((s) => ({ ...s, GPA: val }))}
+          placeholder="4.0"
+        />
+        <FormField
+          label="Description"
+          value={form.description ?? ""}
+          onChange={(val) => onFormChange((s) => ({ ...s, description: val }))}
+          placeholder="Additional details about your education"
+          rows={4}
         />
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
           <FormField
-            label="From"
-            value={form.from ?? ""}
-            onChange={(val) => onFormChange((s) => ({ ...s, from: val }))}
+            label="Start Year"
+            value={form.startAt ?? ""}
+            onChange={(val) => onFormChange((s) => ({ ...s, startAt: val }))}
             placeholder="YYYY"
           />
           <FormField
-            label="To"
-            value={form.to ?? ""}
-            onChange={(val) => onFormChange((s) => ({ ...s, to: val }))}
+            label="End Year"
+            value={form.endAt ?? ""}
+            onChange={(val) => onFormChange((s) => ({ ...s, endAt: val }))}
             placeholder="YYYY"
           />
         </div>

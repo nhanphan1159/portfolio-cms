@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 
 import AboutForm from "@/components/CMS/forms/AboutForm";
+import ItemDetail from "@/components/CMS/shared/ItemDetail";
 import ListItemActions from "@/components/CMS/shared/ListItemActions";
 import LoadingError from "@/components/CMS/shared/LoadingError";
 import { useResourceManager } from "@/hooks/useResourceManager";
@@ -75,17 +76,9 @@ export default function AboutManager() {
       {items.map((item) => (
         <div className="space-y-2 border rounded p-3" key={item.id}>
           <div>
-            {item.name && (
-              <div className="text-sm font-medium text-gray-800">
-                {item.name}
-              </div>
-            )}
-            {item.role && (
-              <div className="text-sm text-gray-600">{item.role}</div>
-            )}
-            <div className="text-sm text-gray-700 whitespace-pre-line mt-2">
-              {item.content}
-            </div>
+            <ItemDetail label="Name" value={item.name} />
+            <ItemDetail label="Role" value={item.role} />
+            <ItemDetail label="Content" value={item.content} />
           </div>
           <ListItemActions
             onEdit={() => handleOpenEdit(item)}

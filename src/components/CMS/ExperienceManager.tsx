@@ -1,8 +1,10 @@
 import React, { useState } from "react";
 
 import ExperienceForm from "@/components/CMS/forms/ExperienceForm";
+import ItemDetail from "@/components/CMS/shared/ItemDetail";
 import ListItemActions from "@/components/CMS/shared/ListItemActions";
 import LoadingError from "@/components/CMS/shared/LoadingError";
+import TimeStartEnd from "@/components/CMS/shared/TimeStartEnd";
 import { useResourceManager } from "@/hooks/useResourceManager";
 
 type ExperienceItem = {
@@ -80,11 +82,9 @@ export default function ExperienceManager() {
             className="flex flex-col sm:flex-row sm:items-center sm:justify-between border rounded p-3 gap-3"
           >
             <div>
-              <div className="font-semibold">{it.company}</div>
-              <div className="text-sm text-gray-700">{it.role}</div>
-              <div className="text-xs text-gray-500">
-                {it.startAt} - {it.endAt}
-              </div>
+              <ItemDetail label="Company" value={it.company} />
+              <ItemDetail label="Role" value={it.role} />
+              <TimeStartEnd start={it.startAt} end={it.endAt} />
             </div>
             <ListItemActions
               onEdit={() => handleOpenEdit(it)}

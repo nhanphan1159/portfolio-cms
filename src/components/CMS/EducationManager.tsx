@@ -1,8 +1,10 @@
 import React, { useState } from "react";
 
 import EducationForm from "@/components/CMS/forms/EducationForm";
+import ItemDetail from "@/components/CMS/shared/ItemDetail";
 import ListItemActions from "@/components/CMS/shared/ListItemActions";
 import LoadingError from "@/components/CMS/shared/LoadingError";
+import TimeStartEnd from "@/components/CMS/shared/TimeStartEnd";
 import { useResourceManager } from "@/hooks/useResourceManager";
 
 type EducationItem = {
@@ -10,8 +12,10 @@ type EducationItem = {
   _id?: string;
   school: string;
   degree: string;
-  from?: string;
-  to?: string;
+  startAt?: string;
+  endAt?: string;
+  GPA?: string;
+  description?: string;
 };
 
 export default function EducationManager() {
@@ -26,17 +30,17 @@ export default function EducationManager() {
     openEdit,
     save,
     remove,
-  } = useResourceManager<EducationItem>("educations");
+  } = useResourceManager<EducationItem>("education");
 
   const [form, setForm] = useState<EducationItem>({
     school: "",
     degree: "",
-    from: "",
-    to: "",
+    startAt: "",
+    endAt: "",
   });
 
   const handleOpenCreate = () => {
-    setForm({ school: "", degree: "", from: "", to: "" });
+    setForm({ school: "", degree: "", startAt: "", endAt: "" });
     openCreate();
   };
 
@@ -44,8 +48,10 @@ export default function EducationManager() {
     setForm({
       school: item.school ?? "",
       degree: item.degree ?? "",
-      from: item.from ?? "",
-      to: item.to ?? "",
+      startAt: item.startAt ?? "",
+      endAt: item.endAt ?? "",
+      GPA: item.GPA ?? "",
+      description: item.description ?? "",
       id: item.id,
     });
     openEdit(item);
@@ -77,11 +83,10 @@ export default function EducationManager() {
             className="flex flex-col sm:flex-row sm:items-center sm:justify-between border rounded p-3 gap-3"
           >
             <div>
-              <div className="font-semibold">{it.school}</div>
-              <div className="text-sm text-gray-700">{it.degree}</div>
-              <div className="text-xs text-gray-500">
-                {it.from} - {it.to}
-              </div>
+              <ItemDetail label="School" value={it.school} />
+              <ItemDetail label="Degree" value={it.degree} />
+              <ItemDetail label="GPA" value={it.GPA} />
+              <TimeStartEnd start={it.startAt} end={it.endAt} />
             </div>
             <ListItemActions
               onEdit={() => handleOpenEdit(it)}
