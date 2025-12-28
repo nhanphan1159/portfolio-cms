@@ -2,14 +2,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useState } from "react";
 
-import {
-  Box,
-  Button,
-  Container,
-  Heading,
-  Text,
-  VStack,
-} from "@chakra-ui/react";
 import { useNavigate } from "@tanstack/react-router";
 
 import { useAuth } from "../contexts/AuthContext";
@@ -45,33 +37,23 @@ export default function Login() {
   };
 
   return (
-    <Container maxW="md" py={20}>
-      <VStack>
-        <Box textAlign="center">
-          <Heading size="2xl" mb={2}>
-            Admin Login
-          </Heading>
-          <Text color="gray.600">
+    <div className="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
+      <div className="max-w-md w-full space-y-8">
+        <div className="text-center">
+          <h2 className="text-4xl font-bold text-gray-900 mb-2">Admin Login</h2>
+          <p className="text-gray-600">
             Đăng nhập với tài khoản Google được ủy quyền
-          </Text>
-        </Box>
+          </p>
+        </div>
 
-        <Box w="full" bg="white" boxShadow="lg" rounded="lg" p={8}>
-          <VStack>
-            <Button
-              size="lg"
-              width="full"
-              colorPalette="blue"
+        <div className="bg-white shadow-lg rounded-lg p-8">
+          <div className="space-y-6">
+            <button
               onClick={handleGoogleSignIn}
-              loading={loading}
               disabled={loading}
+              className="w-full flex items-center justify-center px-4 py-3 border border-transparent text-base font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 disabled:bg-blue-400 disabled:cursor-not-allowed transition-colors duration-200"
             >
-              <svg
-                width="20"
-                height="20"
-                viewBox="0 0 20 20"
-                style={{ marginRight: "12px" }}
-              >
+              <svg width="20" height="20" viewBox="0 0 20 20" className="mr-3">
                 <path
                   fill="#4285F4"
                   d="M19.6 10.23c0-.82-.1-1.42-.25-2.05H10v3.72h5.5c-.15.96-.74 2.31-2.04 3.22v2.45h3.16c1.89-1.73 2.98-4.3 2.98-7.34z"
@@ -89,30 +71,21 @@ export default function Login() {
                   d="M10 3.88c1.88 0 3.13.81 3.85 1.48l2.84-2.76C14.96.99 12.7 0 10 0 6.09 0 2.72 2.25 1.07 5.51l3.24 2.52C5.12 5.62 7.36 3.88 10 3.88z"
                 />
               </svg>
-              Đăng nhập với Google
-            </Button>
+              {loading ? "Đang đăng nhập..." : "Đăng nhập với Google"}
+            </button>
 
             {error && (
-              <Box
-                w="full"
-                p={3}
-                bg="red.50"
-                border="1px"
-                borderColor="red.200"
-                rounded="md"
-              >
-                <Text color="red.700" fontSize="sm">
-                  {error}
-                </Text>
-              </Box>
+              <div className="w-full p-3 bg-red-50 border border-red-200 rounded-md">
+                <p className="text-red-700 text-sm">{error}</p>
+              </div>
             )}
 
-            <Text fontSize="sm" color="gray.600" textAlign="center">
+            <p className="text-sm text-gray-600 text-center">
               Chỉ admin được ủy quyền mới có thể truy cập
-            </Text>
-          </VStack>
-        </Box>
-      </VStack>
-    </Container>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
   );
 }
