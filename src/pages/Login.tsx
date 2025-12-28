@@ -60,12 +60,11 @@ export default function Login() {
           <VStack>
             <Button
               size="lg"
-              w="full"
-              colorScheme="blue"
+              width="full"
+              colorPalette="blue"
               onClick={handleGoogleSignIn}
-              isLoading={loading}
+              loading={loading}
               disabled={loading}
-              loadingText="Đang đăng nhập..."
             >
               <svg
                 width="20"
