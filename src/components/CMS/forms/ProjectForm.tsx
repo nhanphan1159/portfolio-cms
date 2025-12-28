@@ -37,7 +37,7 @@ export default function ProjectForm({
   onClose,
   onSubmit,
 }: ProjectFormProps) {
-  function updatePhoto(index: number, key: "url" | "caption", value: string) {
+  function updatePhoto(index: number, _key: "url" | "caption", value: string) {
     const nextPhotos = [...galleryPhotos];
     nextPhotos[index] = value;
     onGalleryChange(nextPhotos);
