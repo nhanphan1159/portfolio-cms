@@ -51,10 +51,18 @@ export default function ProjectForm({
     input.onchange = (e: Event) => {
       const files = (e.target as HTMLInputElement).files;
       if (files) {
+        const newPhotos: string[] = [];
+        let loadedCount = 0;
+        const totalFiles = files.length;
+
         Array.from(files).forEach((file) => {
           const reader = new FileReader();
           reader.onloadend = () => {
-            onGalleryChange([...galleryPhotos]);
+            newPhotos.push(reader.result as string);
+            loadedCount++;
+            if (loadedCount === totalFiles) {
+              onGalleryChange([...galleryPhotos, ...newPhotos]);
+            }
           };
           reader.readAsDataURL(file);
         });
