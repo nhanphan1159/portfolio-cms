@@ -10,10 +10,10 @@ type ProjectItem = {
   id?: string;
   _id?: string;
   title: string;
-  description?: string;
   url?: string;
   imgMain?: string;
   img?: PhotoItem[];
+  task?: string;
 };
 
 interface ProjectFormProps {
@@ -51,10 +51,18 @@ export default function ProjectForm({
     input.onchange = (e: Event) => {
       const files = (e.target as HTMLInputElement).files;
       if (files) {
+        const newPhotos: string[] = [];
+        let loadedCount = 0;
+        const totalFiles = files.length;
+
         Array.from(files).forEach((file) => {
           const reader = new FileReader();
           reader.onloadend = () => {
-            onGalleryChange([...galleryPhotos]);
+            newPhotos.push(reader.result as string);
+            loadedCount++;
+            if (loadedCount === totalFiles) {
+              onGalleryChange([...galleryPhotos, ...newPhotos]);
+            }
           };
           reader.readAsDataURL(file);
         });
@@ -75,10 +83,7 @@ export default function ProjectForm({
       onClose={onClose}
       title={isEditing ? "Edit Project" : "Create Project"}
     >
-      <form
-        onSubmit={onSubmit}
-        className="space-y-3 max-h-[80vh] overflow-y-auto"
-      >
+      <form onSubmit={onSubmit} className="space-y-3">
         <FormField
           label="Title"
           value={form.title}
@@ -86,9 +91,9 @@ export default function ProjectForm({
           required
         />
         <FormField
-          label="Description"
-          value={form.description ?? ""}
-          onChange={(val) => onFormChange((s) => ({ ...s, description: val }))}
+          label="Task"
+          value={form.task ?? ""}
+          onChange={(val) => onFormChange((s) => ({ ...s, task: val }))}
           rows={3}
         />
         <FormField

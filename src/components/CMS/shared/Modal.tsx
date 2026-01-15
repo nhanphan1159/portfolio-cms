@@ -15,7 +15,7 @@ export default function Modal({
   title,
   children,
   maxWidth = "max-w-lg",
-  maxHeight = "h-[80vh]",
+  maxHeight = "max-h-[80vh]",
 }: ModalProps) {
   if (!isOpen) return null;
 
