@@ -1,12 +1,5 @@
 import { initializeApp } from "firebase/app";
-import {
-  browserLocalPersistence,
-  getAuth,
-  GoogleAuthProvider,
-  initializeAuth,
-} from "firebase/auth";
-
-import { Capacitor } from "@capacitor/core";
+import { getAuth, GoogleAuthProvider } from "firebase/auth";
 
 const firebaseConfig = {
   apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
@@ -21,9 +14,7 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 
 // Initialize Firebase Authentication and get a reference to the service
-export const auth = Capacitor.isNativePlatform()
-  ? initializeAuth(app, { persistence: browserLocalPersistence })
-  : getAuth(app);
+export const auth = getAuth(app);
 export const googleProvider = new GoogleAuthProvider();
 
 // Configure Google Provider

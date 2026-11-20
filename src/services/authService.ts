@@ -1,15 +1,9 @@
 import type { User } from "firebase/auth";
 import {
-  getRedirectResult,
-  GoogleAuthProvider,
   onAuthStateChanged,
-  signInWithCredential,
   signInWithPopup,
   signOut as firebaseSignOut,
 } from "firebase/auth";
-
-import { Capacitor } from "@capacitor/core";
-import { FirebaseAuthentication } from "@capacitor-firebase/authentication";
 
 import { auth, googleProvider } from "../config/firebase";
 
@@ -18,56 +12,12 @@ const ADMIN_EMAIL =
 
 export const authService = {
   // Sign in with Google
-  signInWithGoogle: async (): Promise<User | null> => {
+  signInWithGoogle: async () => {
     try {
-      if (Capacitor.isNativePlatform()) {
-        console.info("[Auth] Starting native Google sign-in");
-        const result = await Promise.race([
-          FirebaseAuthentication.signInWithGoogle({ skipNativeAuth: true }),
-          new Promise<never>((_, reject) =>
-            window.setTimeout(
-              () => reject(new Error("Google Sign-In phản hồi quá chậm.")),
-              15000
-            )
-          ),
-        ]);
-        const idToken = result.credential?.idToken;
-
-        if (!idToken) {
-          console.error(
-            "[Auth] Native Google sign-in returned no ID token",
-            result
-          );
-          throw new Error("Không nhận được Google credential.");
-        }
-
-        const credential = GoogleAuthProvider.credential(
-          idToken,
-          result.credential?.accessToken
-        );
-        console.info("[Auth] Exchanging Google credential with Firebase");
-        const firebaseResult = await signInWithCredential(auth, credential);
-        console.info(
-          "[Auth] Firebase sign-in succeeded",
-          firebaseResult.user.email
-        );
-        return firebaseResult.user;
-      }
-
       const result = await signInWithPopup(auth, googleProvider);
       return result.user;
     } catch (error) {
       console.error("Error signing in with Google:", error);
-      throw error;
-    }
-  },
-
-  getRedirectResult: async (): Promise<User | null> => {
-    try {
-      const result = await getRedirectResult(auth);
-      return result?.user ?? null;
-    } catch (error) {
-      console.error("Error completing Google redirect:", error);
       throw error;
     }
   },

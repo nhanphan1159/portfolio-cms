@@ -20,18 +20,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const loadingFallback = window.setTimeout(() => {
-      setLoading(false);
-    }, 5000);
-
-    void authService.getRedirectResult().catch((error) => {
-      console.error("Redirect authentication failed:", error);
-    });
-
     const unsubscribe = authService.onAuthStateChange((authUser) => {
       setUser(authUser);
       setLoading(false);
-      window.clearTimeout(loadingFallback);
 
       // If user is logged in but not admin, sign them out
       if (authUser && !authService.isAdmin(authUser)) {
@@ -41,18 +32,12 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
       }
     });
 
-    return () => {
-      window.clearTimeout(loadingFallback);
-      unsubscribe();
-    };
+    return () => unsubscribe();
   }, []);
 
   const signIn = async () => {
     try {
       const authUser = await authService.signInWithGoogle();
-      if (!authUser) {
-        throw new Error("Đăng nhập Google không trả về thông tin tài khoản.");
-      }
 
       // Check if user is admin
       if (!authService.isAdmin(authUser)) {
@@ -61,9 +46,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
           "Bạn không có quyền truy cập. Chỉ admin mới có thể đăng nhập."
         );
       }
-      setUser(authUser);
-      setLoading(false);
-    } catch (error: unknown) {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (error: any) {
       console.error("Sign in error:", error);
       throw error;
     }
