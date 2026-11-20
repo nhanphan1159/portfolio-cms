@@ -18,9 +18,9 @@ export default function Login() {
     try {
       setLoading(true);
       setError("");
-      await signIn();
-      // Redirect to admin page after successful login
-      navigate({ to: "/admin" });
+      const authUser = await signIn();
+      if (!authUser) return;
+      navigate({ to: "/admin", replace: true });
     } catch (error: any) {
       // Ignore cancelled popup errors (user closed popup)
       if (
@@ -37,7 +37,7 @@ export default function Login() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen min-h-[100dvh] flex items-center justify-center bg-gray-50 px-4 py-8 sm:px-6 lg:px-8 [padding-top:max(2rem,env(safe-area-inset-top))] [padding-bottom:max(2rem,env(safe-area-inset-bottom))]">
       <div className="max-w-md w-full space-y-8">
         <div className="text-center">
           <h2 className="text-4xl font-bold text-gray-900 mb-2">Admin Login</h2>
@@ -49,9 +49,11 @@ export default function Login() {
         <div className="bg-white shadow-lg rounded-lg p-8">
           <div className="space-y-6">
             <button
+              type="button"
               onClick={handleGoogleSignIn}
               disabled={loading}
-              className="w-full flex items-center justify-center px-4 py-3 border border-transparent text-base font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 disabled:bg-blue-400 disabled:cursor-not-allowed transition-colors duration-200"
+              aria-busy={loading}
+              className="min-h-12 w-full flex items-center justify-center px-4 py-3 border border-transparent text-base font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-600 focus-visible:ring-offset-2 disabled:bg-blue-400 disabled:cursor-not-allowed transition-colors duration-200 touch-manipulation"
             >
               <svg width="20" height="20" viewBox="0 0 20 20" className="mr-3">
                 <path
@@ -75,7 +77,11 @@ export default function Login() {
             </button>
 
             {error && (
-              <div className="w-full p-3 bg-red-50 border border-red-200 rounded-md">
+              <div
+                role="alert"
+                aria-live="assertive"
+                className="w-full p-3 bg-red-50 border border-red-200 rounded-md"
+              >
                 <p className="text-red-700 text-sm">{error}</p>
               </div>
             )}
