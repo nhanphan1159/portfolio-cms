@@ -7,7 +7,7 @@ interface AuthContextType {
   user: User | null;
   loading: boolean;
   isAdmin: boolean;
-  signIn: () => Promise<void>;
+  signIn: () => Promise<User | null>;
   signOut: () => Promise<void>;
 }
 
@@ -24,30 +24,36 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
       setUser(authUser);
       setLoading(false);
 
-      // If user is logged in but not admin, sign them out
       if (authUser && !authService.isAdmin(authUser)) {
-        authService.signOut().then(() => {
+        void authService.signOut().then(() => {
           alert("Bạn không có quyền truy cập. Chỉ admin mới có thể đăng nhập.");
         });
       }
     });
 
+    void authService.getRedirectResult().catch((error: unknown) => {
+      console.error("Redirect sign-in failed:", error);
+    });
+
     return () => unsubscribe();
   }, []);
 
-  const signIn = async () => {
+  const signIn = async (): Promise<User | null> => {
     try {
       const authUser = await authService.signInWithGoogle();
+      if (!authUser) return null;
 
-      // Check if user is admin
       if (!authService.isAdmin(authUser)) {
         await authService.signOut();
         throw new Error(
           "Bạn không có quyền truy cập. Chỉ admin mới có thể đăng nhập."
         );
       }
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    } catch (error: any) {
+
+      setUser(authUser);
+      setLoading(false);
+      return authUser;
+    } catch (error: unknown) {
       console.error("Sign in error:", error);
       throw error;
     }
