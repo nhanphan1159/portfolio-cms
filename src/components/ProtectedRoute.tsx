@@ -15,7 +15,7 @@ export const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children }) => {
   useEffect(() => {
     if (!loading) {
       if (!user || !isAdmin) {
-        navigate({ to: "/", replace: true });
+        navigate({ to: "/login" });
       }
     }
   }, [user, isAdmin, loading, navigate]);
